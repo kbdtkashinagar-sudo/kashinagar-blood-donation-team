@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>KBDT - FB Perfect Card Maker</title>
+    <title>KBDT - Perfect FB Card</title>
     
     <link href="https://fonts.googleapis.com/css2?family=Anek+Bangla:wght@400;600;700;800&display=swap" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
@@ -16,65 +16,69 @@
         .container { display: flex; flex-wrap: wrap; width: 100%; max-width: 1100px; justify-content: center; padding: 15px; box-sizing: border-box; gap: 15px; }
         
         .editor-panel { width: 100%; max-width: 380px; background: #fff; padding: 15px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
-        .input-group { margin-bottom: 10px; }
+        .input-group { margin-bottom: 8px; }
         .input-group label { display: block; font-weight: 700; margin-bottom: 3px; color: #444; font-size: 13px; }
         .input-group input, .input-group select { width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 6px; font-family: 'Anek Bangla'; font-size: 14px; outline: none; box-sizing: border-box; }
         
         .btn-download { width: 100%; padding: 12px; background: #16a34a; color: #fff; border: none; border-radius: 8px; cursor: pointer; font-weight: 800; font-size: 16px; margin-top: 10px; }
         
-        /* FB PERFECT RATIO (4:5) */
-        /* 1080px Width x 1350px Height standard ke base dhore 420x525 kora hoyeche */
+        /* ফেসবুকের জন্য পারফেক্ট ৪:৫ রেশিও (৪২০x৫২৫ পিক্সেল) */
         #captureArea { 
             width: 420px; 
             height: 525px; 
             background: #fff; 
-            border-radius: 0; /* FB post e corner radius lage na download e */
-            overflow: hidden; 
             border: 4px solid var(--primary); 
             position: relative; 
             display: flex; 
             flex-direction: column;
+            overflow: hidden;
             box-sizing: border-box;
         }
         
-        .milestone-label { position: absolute; top: 0; left: 0; background: rgba(0,0,0,0.8); color: white; padding: 5px 15px; font-size: 11px; font-weight: 800; border-bottom-right-radius: 15px; z-index: 10; }
+        .milestone-label { position: absolute; top: 0; left: 0; background: rgba(0,0,0,0.8); color: white; padding: 4px 12px; font-size: 11px; font-weight: 800; border-bottom-right-radius: 12px; z-index: 10; }
         
-        .header { background: var(--grad); padding: 20px 15px 50px 15px; display: flex; align-items: center; justify-content: space-between; color: white; position: relative; z-index: 2; }
-        .header-text h1 { font-size: 18px; margin: 0; line-height: 1.2; }
-        .established { font-size: 10px; font-weight: 600; opacity: 0.9; margin-top: 4px; display: block; }
-        .top-corner-logo { width: 55px; height: 55px; object-fit: contain; background: white; border-radius: 4px; padding: 2px; }
+        .header { background: var(--grad); padding: 20px 15px 45px 15px; display: flex; align-items: center; justify-content: space-between; color: white; position: relative; z-index: 2; }
+        .header-text h1 { font-size: 18px; margin: 0; line-height: 1.2; font-weight: 800; }
+        .established { font-size: 10px; font-weight: 600; opacity: 0.9; margin-top: 3px; display: block; }
+        .top-corner-logo { width: 50px; height: 50px; object-fit: contain; background: white; border-radius: 4px; padding: 2px; }
         
-        .watermark { position: absolute; top: 60%; left: 50%; transform: translate(-50%, -50%); width: 220px; opacity: 0.08; z-index: 1; pointer-events: none; }
+        .watermark { position: absolute; top: 58%; left: 50%; transform: translate(-50%, -50%); width: 200px; opacity: 0.08; z-index: 1; pointer-events: none; }
         
-        .card-body { padding: 0 20px; text-align: center; position: relative; z-index: 3; flex-grow: 1; display: flex; flex-direction: column; }
-        .img-area { margin-top: -45px; margin-bottom: 8px; position: relative; align-self: center; }
-        .donor-img { width: 130px; height: 130px; border-radius: 15px; border: 4px solid #fff; object-fit: cover; background: #eee; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+        .card-body { padding: 0 20px; text-align: center; position: relative; z-index: 3; flex: 1; display: flex; flex-direction: column; }
         
-        .blood-drop { position: absolute; right: -15px; bottom: 5px; width: 42px; height: 50px; background: #ff0000; border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%; transform: rotate(-45deg); display: flex; align-items: center; justify-content: center; border: 3px solid #fff; }
-        .blood-drop span { transform: rotate(45deg); color: white; font-weight: 800; font-size: 14px; margin-top: 4px; margin-left: 4px; }
+        .img-area { margin-top: -40px; margin-bottom: 5px; position: relative; align-self: center; }
+        .donor-img { width: 120px; height: 120px; border-radius: 12px; border: 4px solid #fff; object-fit: cover; background: #eee; box-shadow: 0 4px 8px rgba(0,0,0,0.1); }
         
-        .badge { background: #16a34a; color: white; padding: 4px 18px; border-radius: 6px; font-size: 13px; font-weight: 800; margin-top: -10px; display: inline-block; position: relative; z-index: 4; align-self: center; }
+        .blood-drop { position: absolute; right: -12px; bottom: 5px; width: 38px; height: 45px; background: #ff0000; border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%; transform: rotate(-45deg); display: flex; align-items: center; justify-content: center; border: 3px solid #fff; }
+        .blood-drop span { transform: rotate(45deg); color: white; font-weight: 800; font-size: 13px; margin-top: 3px; margin-left: 3px; }
         
-        .info-table { width: 100%; margin-top: 10px; border-collapse: collapse; table-layout: fixed; }
-        .info-table td { padding: 6px 0; border-bottom: 1px dashed #ddd; vertical-align: middle; word-wrap: break-word; }
-        .label { color: var(--primary); font-weight: 800; text-align: left; font-size: 14px; width: 35%; }
-        .value { color: #111; font-weight: 700; text-align: right; width: 65%; font-size: 14px; }
+        .badge { background: #16a34a; color: white; padding: 3px 15px; border-radius: 5px; font-size: 12px; font-weight: 800; margin-top: -10px; display: inline-block; position: relative; z-index: 4; align-self: center; }
         
-        .val-name { font-size: 15px; line-height: 1.2; }
-        .val-place { font-size: 13px; line-height: 1.2; }
+        .info-table { width: 100%; margin-top: 8px; border-collapse: collapse; table-layout: fixed; }
+        .info-table td { padding: 5px 0; border-bottom: 1px dashed #ddd; vertical-align: middle; word-wrap: break-word; }
+        .label { color: var(--primary); font-weight: 800; text-align: left; font-size: 13px; width: 32%; }
+        .value { color: #111; font-weight: 700; text-align: right; width: 68%; font-size: 13px; line-height: 1.2; }
         
-        .bottom-row { display: flex; align-items: center; justify-content: space-between; margin-top: auto; padding: 8px 0; border-top: 1px solid #eee; }
-        .slogan-box { font-size: 12px; font-weight: 700; color: #555; font-style: italic; text-align: left; flex: 1; padding-right: 8px; }
+        /* কিউআর ও স্লোগান রো - একদম নিচে ফিক্সড */
+        .bottom-row { 
+            display: flex; 
+            align-items: center; 
+            justify-content: space-between; 
+            margin-top: auto; 
+            padding: 8px 0; 
+            border-top: 1px solid #f0f0f0;
+        }
+        .slogan-box { font-size: 12px; font-weight: 700; color: #555; font-style: italic; text-align: left; flex: 1; padding-right: 5px; line-height: 1.2; }
         .qr-area { width: 45px; height: 45px; background: #fff; padding: 2px; border: 1px solid #ddd; border-radius: 4px; flex-shrink: 0; }
         
         .footer { background: #111; color: #fff; padding: 6px; font-size: 11px; text-align: center; font-weight: 700; }
         
-        @media (max-width: 500px) { #captureArea { transform: scale(0.85); transform-origin: top center; } .container { padding: 5px; } }
+        @media (max-width: 500px) { #captureArea { transform: scale(0.85); transform-origin: top center; margin-bottom: -50px; } }
     </style>
 </head>
 <body>
 
-    <div class="header-bar" id="topBar">KBDT FB কার্ড মেকার</div>
+    <div class="header-bar" id="topBar">KBDT - FB Card Maker</div>
 
     <div class="container">
         <div class="editor-panel">
@@ -93,11 +97,11 @@
                 <option value="A-">A-</option><option value="B-">B-</option><option value="O-">O-</option><option value="AB-">AB-</option>
             </select></div>
             <div class="input-group"><label>রক্তদানের স্থান</label><input type="text" id="inPlace" placeholder="হাসপাতালের নাম" oninput="updateCard()"></div>
-            <div class="input-group"><label>রক্তদানের তারিখ</label><input type="text" id="inDate" oninput="updateCard()"></div>
+            <div class="input-group"><label>রক্তদানের তারিখ</label><input type="text" id="inDate" placeholder="তারিখ" oninput="updateCard()"></div>
             <div class="input-group"><label style="color:#ff0000;">দাতার ছবি *</label><input type="file" accept="image/*" onchange="loadFile(event, 'cardImg')"></div>
             <div class="input-group"><label style="color:#16a34a;">লোগো ও ওয়াটারমার্ক</label><input type="file" accept="image/*" onchange="loadLogo(event)"></div>
 
-            <button class="btn-download" onclick="downloadImage()">ডাউনলোড (FB Size)</button>
+            <button class="btn-download" onclick="downloadImage()">ডাউনলোড কার্ড</button>
         </div>
 
         <div id="captureArea">
@@ -110,17 +114,20 @@
                 <img id="cardCornerLogo" src="https://i.ibb.co/L5rK3jC/logo.png" class="top-corner-logo">
             </div>
             <img id="cardWatermark" src="https://i.ibb.co/L5rK3jC/logo.png" class="watermark">
+            
             <div class="card-body">
                 <div class="img-area">
                     <img id="cardImg" src="https://via.placeholder.com/150" class="donor-img">
                     <div class="blood-drop"><span id="dropText">A+</span></div>
                 </div>
                 <div class="badge" id="cardSebaDisplay">সেবা নম্বর: ১১১০ তম</div>
+                
                 <table class="info-table">
-                    <tr><td class="label">রক্তদাতা</td><td class="value"><div class="val-name" id="cardName">ইমরান খান পলাশ</div></td></tr>
+                    <tr><td class="label">রক্তদাতা</td><td class="value" id="cardName">দাতার নাম</td></tr>
                     <tr><td class="label">রক্তদান নং</td><td class="value" id="cardCountDisplay">১৯ বার</td></tr>
-                    <tr><td class="label">স্থান ও তারিখ</td><td class="value"><div class="val-place" id="cardPlace">কুমিল্লা সরকারি মেডিকেল কলেজ</div><div id="cardDate" style="font-size:11px; color:#666; font-weight:800;">০৬/০৩/২০২৬</div></td></tr>
+                    <tr><td class="label">স্থান ও তারিখ</td><td class="value"><span id="cardPlace">হাসপাতাল</span> | <span id="cardDate">তারিখ</span></td></tr>
                 </table>
+                
                 <div class="bottom-row">
                     <div class="slogan-box">"মানবতার শ্রেষ্ঠদান, স্বেচ্ছায় করবো রক্তদান"</div>
                     <div class="qr-area" id="qrcode"></div>
@@ -179,13 +186,9 @@
 
         function downloadImage() {
             const area = document.querySelector("#captureArea");
-            html2canvas(area, { 
-                scale: 3, // High quality output
-                useCORS: true,
-                backgroundColor: "#ffffff"
-            }).then(canvas => {
+            html2canvas(area, { scale: 3, useCORS: true }).then(canvas => {
                 const link = document.createElement('a');
-                link.download = `KBDT_FB_Card.png`;
+                link.download = `KBDT_Card.png`;
                 link.href = canvas.toDataURL("image/png");
                 link.click();
             });
