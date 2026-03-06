@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KBDT - Advanced Card Maker</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Anek+Bangla:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+
+    <style>
+        :root { --primary: #b91c1c; --grad: linear-gradient(135deg, #d32f2f, #8e0000); }
+        body { font-family: 'Anek Bangla', sans-serif; background: #f0f2f5; margin: 0; padding: 0; display: flex; flex-direction: column; align-items: center; }
+        .header-bar { width: 100%; background: #b91c1c; color: white; text-align: center; padding: 15px 0; font-weight: 800; font-size: 20px; transition: 0.3s; }
+        
+        .container { display: flex; flex-wrap: wrap; width: 100%; max-width: 1200px; justify-content: center; padding: 20px; box-sizing: border-box; gap: 20px; }
+        .editor-panel { width: 100%; max-width: 400px; background: #fff; padding: 20px; border-radius: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
+        .input-group { margin-bottom: 12px; }
+        .input-group label { display: block; font-weight: 700; margin-bottom: 5px; color: #444; font-size: 13px; }
+        .input-group input, .input-group select { width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 8px; font-family: 'Anek Bangla'; outline: none; box-sizing: border-box; }
+        
+        .theme-selector { display: flex; gap: 10px; margin-bottom: 15px; flex-wrap: wrap; }
+        .theme-btn { width: 35px; height: 35px; border-radius: 50%; border: 3px solid #fff; cursor: pointer; box-shadow: 0 2px 5px rgba(0,0,0,0.2); transition: 0.2s; }
+        .t-red { background: #b91c1c; } .t-blue { background: #1d4ed8; } .t-gold { background: #854d0e; } .t-green { background: #16a34a; }
+        .t-auto { background: #eee; display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: bold; color: #333; }
+
+        .btn-download { width: 100%; padding: 15px; background: #16a34a; color: #fff; border: none; border-radius: 10px; cursor: pointer; font-weight: 800; font-size: 18px; margin-top: 10px; }
+        .btn-share { width: 100%; padding: 12px; background: #3b5998; color: #fff; border: none; border-radius: 10px; cursor: pointer; font-weight: 700; font-size: 16px; margin-top: 10px; }
+
+        .card { width: 440px; background: #fff; border-radius: 20px; overflow: hidden; box-shadow: 0 10px 40px rgba(0,0,0,0.2); border: 4px solid var(--primary); position: relative; transition: 0.5s; }
+        .milestone-label { position: absolute; top: 0; left: 0; background: rgba(0,0,0,0.7); color: white; padding: 7px 20px; font-size: 11px; font-weight: 800; border-bottom-right-radius: 20px; z-index: 10; backdrop-filter: blur(4px); }
+        
+        .top-corner-logo { position: absolute; top: 12px; right: 12px; width: 65px; height: 65px; object-fit: contain; z-index: 15; }
+        .watermark { position: absolute; top: 60%; left: 50%; transform: translate(-50%, -50%); width: 240px; opacity: 0.12; z-index: 1; pointer-events: none; filter: grayscale(1); }
+
+        .header { background: var(--grad); padding: 35px 10px 65px 10px; text-align: center; color: white; position: relative; z-index: 2; transition: 0.5s; }
+        .card-body { padding: 0 30px 15px 30px; text-align: center; position: relative; z-index: 3; }
+        
+        .img-area { margin-top: -55px; margin-bottom: 15px; position: relative; }
+        .donor-img { width: 150px; height: 150px; border-radius: 22px; border: 6px solid #fff; object-fit: cover; background: #eee; }
+        
+        .blood-drop { position: absolute; right: 88px; bottom: 5px; width: 45px; height: 55px; background: #ff0000; border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%; transform: rotate(-45deg); display: flex; align-items: center; justify-content: center; border: 3px solid #fff; }
+        .blood-drop span { transform: rotate(45deg); color: white; font-weight: 800; font-size: 14px; margin-top: 5px; margin-left: 5px; }
+        
+        .badge { background: #16a34a; color: white; padding: 6px 20px; border-radius: 8px; font-size: 14px; font-weight: 800; margin-top: -10px; display: inline-block; }
+        
+        .info-table { width: 100%; margin-top: 15px; border-collapse: collapse; }
+        .info-table td { padding: 10px 0; border-bottom: 1px dashed #ccc; font-size: 16px; }
+        .label { color: var(--primary); font-weight: 700; text-align: left; }
+        .value { color: #111; font-weight: 600; text-align: right; }
+        
+        .slogan-box { margin-top: 15px; font-size: 16px; font-weight: 700; color: #444; border-top: 2px solid #eee; padding-top: 10px; font-style: italic; }
+        .footer { background: #111; color: #fff; padding: 12px; font-size: 13px; text-align: center; font-weight: 700; }
+        
+        @media (max-width: 500px) { .card { transform: scale(0.85); margin: -30px 0; } }
+    </style>
+</head>
+<body>
+
+    <div class="header-bar" id="topBar">KBDT কার্ড মেকার প্রো</div>
+
+    <div class="container">
+        <div class="editor-panel">
+            <label>কালার থিম:</label>
+            <div class="theme-selector">
+                <div class="theme-btn t-auto" onclick="setManualTheme('auto')">AUTO</div>
+                <div class="theme-btn t-red" onclick="setManualTheme('red')"></div>
+                <div class="theme-btn t-blue" onclick="setManualTheme('blue')"></div>
+                <div class="theme-btn t-gold" onclick="setManualTheme('gold')"></div>
+                <div class="theme-btn t-green" onclick="setManualTheme('green')"></div>
+            </div>
+
+            <div class="input-group">
+                <label>রক্তদান সংখ্যা</label>
+                <select id="inCountNum" onchange="checkAutoColor()">
+                    <script>
+                        for(let i=1; i<=100; i++) document.write(`<option value="${i}">${i} বার</option>`);
+                    </script>
+                </select>
+            </div>
+            
+            <div class="input-group"><label>সেবা নম্বর</label><input type="text" id="inSebaNo" value="১১০৯" oninput="updateCard()"></div>
+            <div class="input-group"><label>দাতার নাম</label><input type="text" id="inName" placeholder="দাতার নাম" oninput="updateCard()"></div>
+            <div class="input-group"><label>রক্তের গ্রুপ</label><select id="inGroup" onchange="updateCard()">
+                <option value="A+">A+</option><option value="B+">B+</option><option value="O+">O+</option><option value="AB+">AB+</option>
+                <option value="A-">A-</option><option value="B-">B-</option><option value="O-">O-</option><option value="AB-">AB-</option>
+            </select></div>
+            <div class="input-group"><label>রক্তদানের স্থান</label><input type="text" id="inPlace" placeholder="হাসপাতাল" oninput="updateCard()"></div>
+            <div class="input-group"><label>রক্তদানের তারিখ</label><input type="text" id="inDate" oninput="updateCard()"></div>
+            
+            <div class="input-group"><label style="color:#ff0000; font-weight:800;">দাতার ছবি *</label><input type="file" accept="image/*" onchange="loadFile(event, 'cardImg')"></div>
+            <div class="input-group"><label style="color:#16a34a; font-weight:800;">লোগো ও ওয়াটারমার্ক</label><input type="file" accept="image/*" onchange="loadLogo(event)"></div>
+
+            <button class="btn-download" onclick="downloadImage()">ডাউনলোড কার্ড</button>
+            <button class="btn-share" onclick="shareApp()">লিঙ্ক শেয়ার করুন</button>
+        </div>
+
+        <div id="captureArea" class="card">
+            <div id="milestoneText" class="milestone-label">New Donor | ১-৪ বার</div>
+            <img id="cardCornerLogo" src="https://i.ibb.co/L5rK3jC/logo.png" class="top-corner-logo">
+            <img id="cardWatermark" src="https://i.ibb.co/L5rK3jC/logo.png" class="watermark">
+            
+            <div class="header" id="cardHeader"><h1 style="font-size: 24px; margin:0; color:white;">কাশীনগর ব্লাড ডোনেশন টিম</h1></div>
+            
+            <div class="card-body">
+                <div class="img-area">
+                    <img id="cardImg" src="https://via.placeholder.com/150" class="donor-img">
+                    <div class="blood-drop"><span id="dropText">A+</span></div>
+                </div>
+                <div class="badge" id="cardSebaDisplay">সেবা নম্বর: ১১০৯ তম</div>
+                
+                <table class="info-table">
+                    <tr><td class="label">রক্তদাতা</td><td class="value" id="cardName">দাতার নাম</td></tr>
+                    <tr><td class="label">রক্তদান নং</td><td class="value" id="cardCountDisplay">১ বার</td></tr>
+                    <tr><td class="label">স্থান ও তারিখ</td><td class="value"><span id="cardPlace">স্থান</span><br><small id="cardDate">তারিখ</small></td></tr>
+                </table>
+                
+                <div class="slogan-box">"মানবতার শ্রেষ্ঠদান, স্বেচ্ছায় করবো রক্তদান"</div>
+
+                <div style="display:flex; justify-content: space-around; margin-top:10px;">
+                    <div id="pageQR" style="width:40px; height:40px;"></div>
+                    <div id="groupQR" style="width:40px; height:40px;"></div>
+                </div>
+            </div>
+            <div class="footer">রক্ত দিন, জীবন বাঁচান - KBDT</div>
+        </div>
+    </div>
+
+    <script>
+        const enToBn = {'0':'০','1':'১','2':'২','3':'৩','4':'৪','5':'৫','6':'৬','7':'৭','8':'৮','9':'৯','/':'/','-':'-'};
+        let currentThemeMode = 'auto';
+
+        function toBn(s) { return s.toString().replace(/[0-9\/\-]/g, m => enToBn[m] || m); }
+
+        window.onload = function() {
+            let d = new Date();
+            document.getElementById('inDate').value = d.getDate().toString().padStart(2,'0')+'/'+(d.getMonth()+1).toString().padStart(2,'0')+'/'+d.getFullYear();
+            new QRCode(document.getElementById("pageQR"), { text: "https://fb.com/kbdt", width: 40, height: 40 });
+            new QRCode(document.getElementById("groupQR"), { text: "https://fb.com/groups/kbdt", width: 40, height: 40 });
+            checkAutoColor();
+        };
+
+        function setTheme(main, grad, label) {
+            document.getElementById('captureArea').style.borderColor = main;
+            document.getElementById('cardHeader').style.background = grad;
+            document.getElementById('topBar').style.background = main;
+            document.getElementById('milestoneText').innerText = label;
+            document.querySelectorAll('.label').forEach(el => el.style.color = main);
+        }
+
+        function setManualTheme(type) {
+            currentThemeMode = type;
+            const themes = {
+                'red': ["#b91c1c", "linear-gradient(135deg, #d32f2f, #8e0000)", "Red Theme"],
+                'blue': ["#1d4ed8", "linear-gradient(135deg, #3b82f6, #1d4ed8)", "Blue Theme"],
+                'gold': ["#854d0e", "linear-gradient(135deg, #eab308, #854d0e)", "Gold Theme"],
+                'green': ["#16a34a", "linear-gradient(135deg, #22c55e, #16a34a)", "Green Theme"]
+            };
+            if(type === 'auto') checkAutoColor(); else setTheme(...themes[type]);
+        }
+
+        function checkAutoColor() {
+            if(currentThemeMode !== 'auto') return updateCard();
+            const count = parseInt(document.getElementById('inCountNum').value);
+            
+            // New Range Logic
+            if(count >= 1 && count <= 4) setTheme("#b91c1c", "linear-gradient(135deg, #d32f2f, #8e0000)", "New Donor | ১-৪ বার");
+            else if(count >= 5 && count <= 9) setTheme("#1d4ed8", "linear-gradient(135deg, #3b82f6, #1d4ed8)", "Regular Donor | ৫-৯ বার");
+            else if(count >= 10 && count <= 19) setTheme("#0f766e", "linear-gradient(135deg, #14b8a6, #0f766e)", "Active Donor | ১০-১৯ বার");
+            else if(count >= 20 && count <= 29) setTheme("#6d28d9", "linear-gradient(135deg, #8b5cf6, #6d28d9)", "Dedicated Donor | ২০-২৯ বার");
+            else if(count >= 30 && count <= 39) setTheme("#be185d", "linear-gradient(135deg, #ec4899, #be185d)", "Super Donor | ৩০-৩৯ বার");
+            else if(count >= 40 && count <= 49) setTheme("#111827", "linear-gradient(135deg, #4b5563, #111827)", "Elite Donor | ৪০-৪৯ বার");
+            else if(count >= 50) setTheme("#854d0e", "linear-gradient(135deg, #eab308, #854d0e)", "Century Donor | ৫০+ বার");
+            
+            updateCard();
+        }
+
+        function loadFile(e, id) { var r = new FileReader(); r.onload = function(){ document.getElementById(id).src = r.result; }; r.readAsDataURL(e.target.files[0]); }
+        function loadLogo(e) { var r = new FileReader(); r.onload = function(){ document.getElementById('cardCornerLogo').src = r.result; document.getElementById('cardWatermark').src = r.result; }; r.readAsDataURL(e.target.files[0]); }
+
+        function updateCard() {
+            document.getElementById('cardName').innerText = document.getElementById('inName').value || "দাতার নাম";
+            document.getElementById('dropText').innerText = document.getElementById('inGroup').value;
+            document.getElementById('cardDate').innerText = toBn(document.getElementById('inDate').value);
+            document.getElementById('cardPlace').innerText = document.getElementById('inPlace').value || "হাসপাতাল";
+            document.getElementById('cardSebaDisplay').innerText = "সেবা নম্বর: " + toBn(document.getElementById('inSebaNo').value) + " তম";
+            document.getElementById('cardCountDisplay').innerText = toBn(document.getElementById('inCountNum').value) + " বার";
+        }
+
+        function downloadImage() {
+            html2canvas(document.querySelector("#captureArea"), { scale: 3, useCORS: true }).then(canvas => {
+                const link = document.createElement('a'); link.download = `KBDT_Card.png`; link.href = canvas.toDataURL(); link.click();
+            });
+        }
+
+        function shareApp() {
+            if (navigator.share) {
+                navigator.share({ title: 'KBDT কার্ড মেকার', text: 'সহজেই রক্তদান কার্ড তৈরি করুন!', url: window.location.href });
+            } else {
+                alert("লিঙ্কটি কপি করুন: " + window.location.href);
+            }
+        }
+    </script>
+</body>
+</html>
